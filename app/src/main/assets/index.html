@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PAAF Clubs Filles</title>
+<style>
+:root {
+  --bg: #f6f4f7; --panel: #ffffff; --fg: #1f1a24; --muted: #6b6372; --line: #e3dde8;
+  --accent: #6b2d5c; --c0: #6b2d5c; --c1: #2f7f86; --c2: #d08a2e; --ok: #2e7d4f; --bad: #b3261e; --grid: #ece7f0;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #16131a; --panel: #211d26; --fg: #f1edf4; --muted: #a59dad; --line: #3a3341;
+          --accent: #d08ac0; --c0: #d08ac0; --c1: #5fc0c8; --c2: #f0b45e; --ok: #6fd39a; --bad: #ff8a80; --grid: #2d2833; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+body { padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+.wrap { max-width: 980px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 22px; }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.brand { font-weight: 700; font-size: 1.05rem; color: var(--accent); }
+.btns { display: flex; gap: 6px; }
+button { font: inherit; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 8px; padding: 7px 11px; }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); width: 100%; padding: 11px; font-weight: 600; }
+h1 { font-size: 1.35rem; margin: 0 0 6px; font-weight: 600; }
+h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 600; }
+.lede { margin: 0; line-height: 1.5; }
+.sub { color: var(--muted); font-size: .82rem; margin: 0 0 10px; }
+.maj { color: var(--muted); font-size: .8rem; margin-top: 6px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+.card .lab { font-size: .78rem; color: var(--muted); font-weight: 600; }
+.card .val { font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+.card .del { font-size: .76rem; font-variant-numeric: tabular-nums; min-height: 1em; }
+.card .cib { font-size: .74rem; color: var(--muted); }
+.good { color: var(--ok); } .bad { color: var(--bad); } .flat { color: var(--muted); }
+.chart { position: relative; width: 100%; min-height: 260px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
+.chart svg text { fill: var(--muted); font-size: 11px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: .78rem; color: var(--muted); margin-bottom: 8px; }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); margin-bottom: 8px; max-width: 100%; }
+.scroll { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: .8rem; font-variant-numeric: tabular-nums; }
+th { text-align: left; color: var(--muted); font-weight: 600; padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.num { text-align: right; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--line); box-shadow: 0 4px 14px rgba(0,0,0,.18); border-radius: 8px; padding: 6px 9px; font-size: .75rem; white-space: nowrap; z-index: 2; }
+details { font-size: .8rem; } details dt { font-weight: 600; margin-top: 8px; } details dd { margin: 0; color: var(--muted); }
+.screen { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.box { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
+.box input[type=password] { font: inherit; padding: 11px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); }
+.err { color: var(--bad); font-size: .85rem; min-height: 1.1em; }
+.small { font-size: .82rem; color: var(--muted); }
+[hidden] { display: none !important; }
+</style>
+<script src="d3.min.js"></script>
+<script src="config.js"></script>
+</head>
+<body>
+
+<div id="ecran-attente" class="screen"><div class="box"><div class="brand">PAAF Clubs Filles</div><p class="small" id="attente-msg">Chargement des données…</p></div></div>
+
+<div id="ecran-mdp" class="screen" hidden>
+  <form class="box" id="form-mdp" autocomplete="off">
+    <div class="brand">PAAF Clubs Filles</div>
+    <p class="small">Tableau de bord du suivi-évaluation des clubs des filles. Entrez le mot de passe de l'équipe.</p>
+    <input type="password" id="mdp" placeholder="Mot de passe" required>
+    <label class="small"><input type="checkbox" id="retenir" checked> Se souvenir sur cet appareil</label>
+    <div class="err" id="mdp-err"></div>
+    <button class="primary" type="submit">Ouvrir le tableau de bord</button>
+  </form>
+</div>
+
+<div id="ecran-erreur" class="screen" hidden>
+  <div class="box"><div class="brand">PAAF Clubs Filles</div><p id="erreur-msg"></p><button class="primary" id="btn-reessayer">Réessayer</button></div>
+</div>
+
+<main id="tableau" class="wrap" hidden>
+  <div class="bar">
+    <span class="brand">PAAF Clubs Filles</span>
+    <span class="btns"><button id="btn-actualiser">↻ Actualiser</button><button id="btn-verrou">🔒</button></span>
+  </div>
+
+  <header>
+    <h1>Suivi mensuel des clubs des filles</h1>
+    <p class="lede" id="lede"></p>
+    <p class="maj" id="maj"></p>
+  </header>
+
+  <section>
+    <h2>Indicateurs du mois</h2>
+    <p class="sub" id="kpi-sous-titre"></p>
+    <div class="grid" id="kpis"></div>
+  </section>
+
+  <section>
+    <h2>Exécution et participation, mois par mois</h2>
+    <p class="sub">Séances tenues ÷ séances prévues ; présences ÷ (inscrites × séances tenues).</p>
+    <div class="legend" id="leg-tendance"></div>
+    <div class="chart" id="graph-tendance"></div>
+  </section>
+
+  <section>
+    <h2>Résultats chez les filles (questionnaire anonyme F5)</h2>
+    <p class="sub" id="enq-gain"></p>
+    <select id="enq-indic" aria-label="Indicateur de l'enquête">
+      <option value="score_connaissances_pct">Score de connaissances (%)</option>
+      <option value="connait_services_pct">Connaît au moins 2 sources d'aide (%)</option>
+    </select>
+    <div class="legend" id="leg-enquete"></div>
+    <div class="chart" id="graph-enquete"></div>
+  </section>
+
+  <section>
+    <h2>Par province et milieu</h2>
+    <p class="sub" id="prov-sous-titre"></p>
+    <div class="scroll"><table>
+      <thead><tr><th>Province – milieu</th><th class="num">Clubs</th><th class="num">Exécution %</th><th class="num">Participation %</th><th class="num">Supervision %</th><th class="num">Qualité %</th></tr></thead>
+      <tbody id="tab-province"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Clubs à suivre en priorité</h2>
+    <p class="sub">Les 12 clubs opérationnels où la participation a été la plus faible ce mois-ci.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Club</th><th>Province</th><th>Milieu</th><th>Superviseure</th><th class="num">Participation %</th><th class="num">Séances (sur 4)</th><th class="num">Qualité %</th></tr></thead>
+      <tbody id="tab-alerte"></tbody>
+    </table></div>
+  </section>
+
+  <details>
+    <summary>Définitions des indicateurs</summary>
+    <dl>
+      <dt>Club opérationnel</dt><dd>Animatrice formée et signataire du code de conduite, espace sûr sans hommes ni garçons, parents informés, au moins un service de référencement (F1).</dd>
+      <dt>Taux d'exécution</dt><dd>Séances tenues ÷ séances prévues.</dd>
+      <dt>Taux de participation</dt><dd>Présences ÷ (filles inscrites × séances tenues), d'après F3.</dd>
+      <dt>Couverture de supervision</dt><dd>Clubs ayant reçu une visite ou un appel de supervision dans le mois ÷ clubs opérationnels (F4).</dd>
+      <dt>Score de qualité</dt><dd>Grille d'observation à 10 critères notés de 0 à 2, ramenée sur 100.</dd>
+      <dt>Complétude et ponctualité</dt><dd>Rapports F3 reçus ÷ séances inscrites au registre ; rapports envoyés au plus tard 3 jours après la séance ÷ rapports reçus.</dd>
+    </dl>
+  </details>
+  <p class="small">Données agrégées, sans aucun nom. Sources : formulaires SurveyCTO F1 à F5.</p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var CIBLE_CLUBS = 800;
+  var URL_DONNEES = window.PAAF_DATA_URL || "";
+  var CLE_CACHE = "paaf_donnees_chiffrees", CLE_MDP = "paaf_mdp";
+  var MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+  var fr = d3.formatLocale({ decimal: ",", thousands: " ", grouping: [3], currency: ["", ""] });
+  var fint = fr.format(",d"), fdec = fr.format(",.1f");
+  var $ = function (id) { return document.getElementById(id); };
+  var etat = { donnees: null };
+
+  function stockage(cle, val) {
+    try { if (val === undefined) return localStorage.getItem(cle); if (val === null) localStorage.removeItem(cle); else localStorage.setItem(cle, val); } catch (e) { return null; }
+  }
+  function ecran(nom) {
+    ["ecran-attente", "ecran-mdp", "ecran-erreur", "tableau"].forEach(function (id) { $(id).hidden = id !== nom; });
+  }
+  function erreur(msg) { $("erreur-msg").textContent = msg; ecran("ecran-erreur"); }
+  function moisLabel(m) { var p = String(m).split("-"); return MOIS[+p[1] - 1] + " " + p[0]; }
+  function moisCourt(m) { var p = String(m).split("-"); return MOIS[+p[1] - 1].slice(0, 4) + ". " + p[0].slice(2); }
+  function r1(x) { return isFinite(x) ? Math.round(x * 10) / 10 : null; }
+  function b64(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+
+  // ---------- chiffrement : PBKDF2-SHA256 + AES-256-GCM (identique à chiffrer_donnees.py)
+  async function dechiffrer(texteChiffre, mdp) {
+    var f = JSON.parse(texteChiffre);
+    if (f.format !== "paaf-enc-1") throw new Error("format");
+    var base = await crypto.subtle.importKey("raw", new TextEncoder().encode(mdp), "PBKDF2", false, ["deriveKey"]);
+    var cle = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(f.salt), iterations: f.iter, hash: "SHA-256" },
+      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    var clair = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(f.iv) }, cle, b64(f.ct));
+    return JSON.parse(new TextDecoder().decode(clair));
+  }
+
+  async function telecharger() {
+    if (!URL_DONNEES) return null;
+    try {
+      var rep = await fetch(URL_DONNEES + "?t=" + Date.now(), { cache: "no-store" });
+      if (!rep.ok) return null;
+      var txt = await rep.text();
+      JSON.parse(txt);
+      stockage(CLE_CACHE, txt);
+      return txt;
+    } catch (e) { return null; }
+  }
+
+  async function demarrer() {
+    ecran("ecran-attente");
+    $("attente-msg").textContent = "Chargement des données…";
+    if (!window.crypto || !crypto.subtle) { erreur("Cet appareil ne permet pas de déchiffrer les données (navigateur trop ancien)."); return; }
+    var txt = await telecharger();
+    etat.horsLigne = !txt;
+    if (!txt) txt = stockage(CLE_CACHE);
+    if (!txt) {
+      erreur(URL_DONNEES ? "Impossible de télécharger les données. Vérifiez la connexion Internet puis réessayez."
+                         : "L'adresse des données n'est pas configurée dans cette version de l'application.");
+      return;
+    }
+    etat.chiffre = txt;
+    var mdp = stockage(CLE_MDP);
+    if (mdp) {
+      try { afficher(await dechiffrer(txt, mdp)); return; } catch (e) { stockage(CLE_MDP, null); }
+    }
+    $("mdp").value = ""; $("mdp-err").textContent = ""; ecran("ecran-mdp");
+  }
+
+  $("form-mdp").addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+    $("mdp-err").textContent = "Vérification…";
+    var mdp = $("mdp").value;
+    try {
+      var d = await dechiffrer(etat.chiffre, mdp);
+      if ($("retenir").checked) stockage(CLE_MDP, mdp);
+      afficher(d);
+    } catch (e) { $("mdp-err").textContent = "Mot de passe incorrect."; }
+  });
+  $("btn-reessayer").addEventListener("click", demarrer);
+  $("btn-actualiser").addEventListener("click", demarrer);
+  $("btn-verrou").addEventListener("click", function () { stockage(CLE_MDP, null); $("mdp").value = ""; $("mdp-err").textContent = ""; ecran("ecran-mdp"); });
+  $("enq-indic").addEventListener("change", function () { if (etat.donnees) dessinerEnquete(); });
+  var minuterie;
+  window.addEventListener("resize", function () { clearTimeout(minuterie); minuterie = setTimeout(function () { if (etat.donnees) { dessinerTendance(); dessinerEnquete(); } }, 200); });
+
+  // ---------- calculs (mêmes définitions que le tableau de bord en ligne)
+  function calculer(d) {
+    var cm = d3.csvParse(d.club_mois || ""), enq = d3.csvParse(d.enquete_filles || "");
+    var mensuel = Array.from(d3.group(cm, function (r) { return r.mois; }), function (e) {
+      var mois = e[0], rs = e[1];
+      var s = function (k) { return d3.sum(rs, function (r) { return +r[k] || 0; }); };
+      var vis = rs.filter(function (r) { return r.visite_presentielle === "1"; });
+      var ops = s("club_operationnel");
+      return { mois: mois, clubs_ops: ops,
+        exec_pct: r1(s("seances_realisees") / s("seances_prevues") * 100),
+        part_pct: r1(s("presences") / s("presences_possibles") * 100),
+        part_h_pct: r1(s("presences_handicap") / s("presences_possibles_handicap") * 100),
+        sup_pct: r1(s("supervise") / ops * 100),
+        qual_moy: r1(d3.mean(vis, function (r) { return +r.score_qualite_pct; })),
+        complet_pct: r1(s("rapports_recus") / s("rapports_attendus") * 100),
+        ponct_pct: r1(s("rapports_a_temps") / s("rapports_recus") * 100) };
+    }).sort(function (a, b) { return d3.ascending(a.mois, b.mois); });
+    var dernier = d3.max(cm, function (r) { return r.mois; });
+    var duMois = cm.filter(function (r) { return r.mois === dernier; });
+    var province = Array.from(d3.group(duMois, function (r) { return r.province + " – " + r.milieu; }), function (e) {
+      var rs = e[1], s = function (k) { return d3.sum(rs, function (r) { return +r[k] || 0; }); };
+      var vis = rs.filter(function (r) { return r.visite_presentielle === "1"; });
+      return { groupe: e[0], clubs: rs.length,
+        exec_pct: r1(s("seances_realisees") / s("seances_prevues") * 100),
+        part_pct: r1(s("presences") / s("presences_possibles") * 100),
+        sup_pct: r1(s("supervise") / s("club_operationnel") * 100),
+        qual_moy: r1(d3.mean(vis, function (r) { return +r.score_qualite_pct; })) };
+    }).sort(function (a, b) { return d3.ascending(a.groupe, b.groupe); });
+    var alerte = duMois.filter(function (r) { return r.club_operationnel === "1" && +r.presences_possibles > 0; })
+      .map(function (r) { return { club: r.club, province: r.province, milieu: r.milieu, superviseure: r.superviseure,
+        part_pct: r1(+r.presences / +r.presences_possibles * 100), seances: +r.seances_realisees,
+        qualite: r.score_qualite_pct === "" ? null : +r.score_qualite_pct }; })
+      .sort(function (a, b) { return d3.ascending(a.part_pct, b.part_pct); }).slice(0, 12);
+    return { mensuel: mensuel, province: province, alerte: alerte, enquete: enq };
+  }
+
+  function afficher(d) {
+    etat.donnees = d;
+    etat.calc = calculer(d);
+    ecran("tableau");
+    var maj = d.maj ? new Date(d.maj) : null;
+    $("maj").textContent = (maj && !isNaN(maj) ? "Données mises à jour le " + maj.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "")
+      + (etat.horsLigne ? " · hors ligne : dernière version enregistrée sur l'appareil" : "");
+    remplirKpis(); dessinerTendance(); dessinerEnquete(); remplirTables();
+  }
+
+  function remplirKpis() {
+    var m = etat.calc.mensuel, cur = m[m.length - 1], prev = m.length > 1 ? m[m.length - 2] : null;
+    var lede = $("lede");
+    if (!cur) { lede.textContent = "Aucune donnée de club pour l'instant."; $("kpis").replaceChildren(); return; }
+    var phrase = "En " + moisLabel(cur.mois) + ", " + fint(cur.clubs_ops) + (cur.clubs_ops > 1 ? " clubs" : " club") + " sur " + fint(CIBLE_CLUBS) + (cur.clubs_ops > 1 ? " étaient opérationnels" : " était opérationnel");
+    if (cur.part_pct != null) phrase += " ; la participation des filles atteint " + fdec(cur.part_pct) + " %";
+    if (prev && cur.part_pct != null && prev.part_pct != null) {
+      var dlt = r1(cur.part_pct - prev.part_pct);
+      phrase += dlt > 0 ? ", en hausse de " + fdec(dlt) + " point sur le mois précédent" : dlt < 0 ? ", en baisse de " + fdec(-dlt) + " point sur le mois précédent" : ", stable par rapport au mois précédent";
+    } else if (!prev) phrase += " (premier mois de données)";
+    lede.textContent = phrase + ".";
+    $("kpi-sous-titre").textContent = "Mois de " + moisLabel(cur.mois) + (prev ? ", comparé à " + moisLabel(prev.mois) : "") + ".";
+    $("prov-sous-titre").textContent = "Mois de " + moisLabel(cur.mois) + ".";
+    var defs = [
+      ["clubs_ops", "Clubs opérationnels", "", "Cible : " + fint(CIBLE_CLUBS) + " clubs"],
+      ["exec_pct", "Exécution des séances", " %", "Cible : ≥ 90 %"],
+      ["part_pct", "Participation", " %", "Cible : ≥ 80 %"],
+      ["part_h_pct", "Participation des filles en situation de handicap", " %", "Cible : au moins le taux général"],
+      ["sup_pct", "Couverture de supervision", " %", "Cible : 100 %"],
+      ["qual_moy", "Qualité pédagogique", " %", "Cible : ≥ 75 %"],
+      ["complet_pct", "Complétude des rapports", " %", "Cible : ≥ 95 %"],
+      ["ponct_pct", "Rapports envoyés en 3 jours", " %", "Cible : ≥ 90 %"]];
+    var conteneur = $("kpis"); conteneur.replaceChildren();
+    defs.forEach(function (df) {
+      var v = cur[df[0]], p = prev ? prev[df[0]] : null;
+      var carte = document.createElement("div"); carte.className = "card";
+      var lab = document.createElement("span"); lab.className = "lab"; lab.textContent = df[1];
+      var val = document.createElement("span"); val.className = "val";
+      val.textContent = v == null ? "—" : (df[0] === "clubs_ops" ? fint(v) : fdec(v)) + df[2];
+      var del = document.createElement("span"); del.className = "del flat";
+      if (v != null && p != null) {
+        var e = r1(v - p);
+        del.textContent = (e > 0 ? "+" : e < 0 ? "−" : "±") + (df[0] === "clubs_ops" ? fint(Math.abs(e)) : fdec(Math.abs(e)) + " pt") + " vs mois précédent";
+        del.className = "del " + (e > 0 ? "good" : e < 0 ? "bad" : "flat");
+      } else del.textContent = "—";
+      var cib = document.createElement("span"); cib.className = "cib"; cib.textContent = df[3];
+      carte.append(lab, val, del, cib); conteneur.appendChild(carte);
+    });
+  }
+
+  function legende(id, items) {
+    var el = $(id); el.replaceChildren();
+    items.forEach(function (it) {
+      var s = document.createElement("span"), sw = document.createElement("i");
+      sw.className = "sw"; sw.style.background = it[1]; s.append(sw, document.createTextNode(it[0])); el.appendChild(s);
+    });
+  }
+  function couleurs() { var cs = getComputedStyle(document.documentElement); return ["--c0", "--c1", "--c2"].map(function (v) { return cs.getPropertyValue(v).trim(); }); }
+  function infobulle(el) { var t = el.querySelector(".tip"); if (!t) { t = document.createElement("div"); t.className = "tip"; t.hidden = true; el.appendChild(t); } return t; }
+  function placer(tip, el, ev) {
+    var b = el.getBoundingClientRect(), x = ev.clientX - b.left, y = ev.clientY - b.top;
+    tip.style.left = Math.max(0, Math.min(x + 10, el.clientWidth - tip.offsetWidth - 4)) + "px";
+    tip.style.top = Math.max(0, y - 30) + "px";
+  }
+
+  function dessinerTendance() {
+    var el = $("graph-tendance"), rows = etat.calc.mensuel, c = couleurs();
+    var series = [["exec_pct", "Exécution", c[0]], ["part_pct", "Participation", c[1]], ["part_h_pct", "Handicap", c[2]]];
+    legende("leg-tendance", [["Taux d'exécution", c[0]], ["Taux de participation", c[1]], ["Participation des filles en situation de handicap", c[2]]]);
+    el.replaceChildren();
+    if (!rows.length) { el.textContent = "Pas encore de données."; return; }
+    var W = Math.max(280, el.clientWidth - 16), H = 250, ml = 44;
+    var svg = d3.select(el).append("svg").attr("width", "100%").attr("height", H).attr("viewBox", "0 0 " + W + " " + H)
+      .attr("role", "img").attr("aria-label", "Évolution mensuelle de l'exécution et de la participation");
+    var y = d3.scaleLinear().domain([0, 100]).range([H - 26, 10]);
+    var x = d3.scalePoint().domain(rows.map(function (r) { return r.mois; })).range([ml + 10, W - 44]).padding(rows.length === 1 ? 0.5 : 0);
+    svg.append("g").attr("transform", "translate(" + ml + ",0)").call(d3.axisLeft(y).ticks(5).tickSize(-(W - ml - 10)).tickFormat(function (v) { return v + " %"; }))
+      .call(function (g) { g.select(".domain").remove(); g.selectAll("line").style("stroke", "var(--grid)"); });
+    svg.append("g").attr("transform", "translate(0," + (H - 26) + ")").call(d3.axisBottom(x).tickFormat(moisCourt).tickSize(0).tickPadding(9))
+      .call(function (g) { g.select(".domain").style("stroke", "var(--line)"); });
+    series.forEach(function (s) {
+      var pts = rows.filter(function (r) { return r[s[0]] != null; });
+      svg.append("path").datum(pts).attr("fill", "none").style("stroke", s[2]).attr("stroke-width", 2)
+        .attr("d", d3.line().x(function (r) { return x(r.mois); }).y(function (r) { return y(r[s[0]]); }));
+      svg.append("g").selectAll("circle").data(pts).join("circle").attr("r", 3.5).attr("cx", function (r) { return x(r.mois); })
+        .attr("cy", function (r) { return y(r[s[0]]); }).style("fill", s[2]);
+      var der = pts[pts.length - 1];
+      if (der) svg.append("text").attr("x", x(der.mois) + 7).attr("y", y(der[s[0]]) + 4).text(fdec(der[s[0]]));
+    });
+    var tip = infobulle(el), pas = rows.length > 1 ? x.step() : W;
+    svg.append("g").selectAll("rect").data(rows).join("rect").attr("x", function (r) { return x(r.mois) - pas / 2; }).attr("width", pas)
+      .attr("y", 0).attr("height", H - 26).style("fill", "transparent")
+      .on("pointerenter pointermove", function (ev, r) {
+        tip.hidden = false; tip.replaceChildren();
+        var h = document.createElement("div"); h.style.fontWeight = "600"; h.textContent = moisLabel(r.mois); tip.appendChild(h);
+        series.forEach(function (s) { var l = document.createElement("div"); l.textContent = s[1] + " : " + (r[s[0]] == null ? "—" : fdec(r[s[0]]) + " %"); tip.appendChild(l); });
+        placer(tip, el, ev);
+      }).on("pointerleave", function () { tip.hidden = true; });
+  }
+
+  function dessinerEnquete() {
+    var el = $("graph-enquete"), c = couleurs(), k = $("enq-indic").value, enq = etat.calc.enquete;
+    var noms = { "Baseline": "Situation de référence", "Mi-parcours": "Mi-parcours", "Final": "Évaluation finale" };
+    var vagues = ["Baseline", "Mi-parcours", "Final"].filter(function (v) { return enq.some(function (r) { return r.vague === v; }); });
+    legende("leg-enquete", vagues.map(function (v, i) { return [noms[v], c[i]]; }));
+    var moy = function (v, champ) { var rs = enq.filter(function (r) { return r.vague === v; }); return d3.sum(rs, function (r) { return +r[champ] * +r.repondantes; }) / d3.sum(rs, function (r) { return +r.repondantes; }); };
+    var derniere = vagues.length > 1 ? vagues[vagues.length - 1] : null;
+    $("enq-gain").textContent = derniere && vagues[0] === "Baseline"
+      ? "Gain moyen de connaissances : " + fdec(r1(moy(derniere, "score_connaissances_pct") - moy("Baseline", "score_connaissances_pct"))) + " points ; connaissance des sources d'aide : " + fdec(r1(moy(derniere, "connait_services_pct") - moy("Baseline", "connait_services_pct"))) + " points."
+      : "Le gain apparaîtra après la deuxième vague d'enquête.";
+    el.replaceChildren();
+    if (!enq.length) { el.textContent = "Pas encore de questionnaire."; return; }
+    var rows = enq.map(function (r) { return { grp: r.province + " · " + (r.tranche === "A" ? "12-14 ans" : "15-18 ans"), vague: r.vague, v: +r[k], n: +r.repondantes }; });
+    var groupes = Array.from(new Set(rows.map(function (r) { return r.grp; })));
+    var W = Math.max(280, el.clientWidth - 16), H = 250, ml = 40;
+    var svg = d3.select(el).append("svg").attr("width", "100%").attr("height", H).attr("viewBox", "0 0 " + W + " " + H)
+      .attr("role", "img").attr("aria-label", "Résultats de l'enquête par province, tranche d'âge et vague");
+    var y = d3.scaleLinear().domain([0, 100]).range([H - 38, 12]);
+    var x0 = d3.scaleBand().domain(groupes).range([ml, W - 6]).paddingInner(0.25).paddingOuter(0.1);
+    var x1 = d3.scaleBand().domain(vagues).range([0, x0.bandwidth()]).padding(0.08);
+    svg.append("g").attr("transform", "translate(" + ml + ",0)").call(d3.axisLeft(y).ticks(5).tickSize(-(W - ml - 6)).tickFormat(function (v) { return v + " %"; }))
+      .call(function (g) { g.select(".domain").remove(); g.selectAll("line").style("stroke", "var(--grid)"); });
+    var xa = svg.append("g").attr("transform", "translate(0," + (H - 38) + ")").call(d3.axisBottom(x0).tickSize(0).tickPadding(11));
+    xa.select(".domain").style("stroke", "var(--line)");
+    xa.selectAll(".tick text").each(function (t) { var p = t.split(" · "), tx = d3.select(this); tx.text(null);
+      p.forEach(function (s, i) { tx.append("tspan").attr("x", 0).attr("dy", i ? "1.1em" : 0).text(s); }); });
+    var tip = infobulle(el);
+    svg.append("g").selectAll("rect").data(rows.filter(function (r) { return vagues.indexOf(r.vague) >= 0; })).join("rect")
+      .attr("x", function (r) { return x0(r.grp) + x1(r.vague); }).attr("width", x1.bandwidth())
+      .attr("y", function (r) { return y(r.v || 0); }).attr("height", function (r) { return y(0) - y(r.v || 0); }).attr("rx", 2)
+      .style("fill", function (r) { return c[vagues.indexOf(r.vague)]; })
+      .on("pointerenter pointermove", function (ev, r) { tip.hidden = false; tip.textContent = r.grp + " — " + noms[r.vague] + " : " + fdec(r.v) + " % (" + fint(r.n) + " filles)"; placer(tip, el, ev); })
+      .on("pointerleave", function () { tip.hidden = true; });
+    if (x1.bandwidth() >= 22) svg.append("g").selectAll("text").data(rows).join("text")
+      .attr("x", function (r) { return x0(r.grp) + x1(r.vague) + x1.bandwidth() / 2; }).attr("y", function (r) { return y(r.v || 0) - 4; })
+      .attr("text-anchor", "middle").text(function (r) { return Math.round(r.v); });
+  }
+
+  function lignes(tbody, donnees, cols) {
+    tbody.replaceChildren();
+    if (!donnees.length) { var tr0 = document.createElement("tr"), td0 = document.createElement("td"); td0.colSpan = cols.length; td0.textContent = "Aucune donnée."; tr0.appendChild(td0); tbody.appendChild(tr0); return; }
+    donnees.forEach(function (r) {
+      var tr = document.createElement("tr");
+      cols.forEach(function (c) { var td = document.createElement("td"), v = r[c[0]]; td.textContent = v == null || v === "" ? "—" : c[1] ? c[1](v) : String(v); if (c[1]) td.className = "num"; tr.appendChild(td); });
+      tbody.appendChild(tr);
+    });
+  }
+  function remplirTables() {
+    lignes($("tab-province"), etat.calc.province, [["groupe"], ["clubs", fint], ["exec_pct", fdec], ["part_pct", fdec], ["sup_pct", fdec], ["qual_moy", fdec]]);
+    lignes($("tab-alerte"), etat.calc.alerte, [["club"], ["province"], ["milieu"], ["superviseure"], ["part_pct", fdec], ["seances", fint], ["qualite", fint]]);
+  }
+
+  demarrer();
+})();
+</script>
+</body>
+</html>
