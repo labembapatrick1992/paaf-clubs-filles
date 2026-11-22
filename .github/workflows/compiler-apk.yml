@@ -12,10 +12,12 @@ on:
 jobs:
   apk:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -39,3 +41,11 @@ jobs:
         with:
           name: PAAF-Clubs-Filles-apk
           path: PAAF-Clubs-Filles.apk
+
+      - name: Publier l'APK (lien de téléchargement direct)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v1.0.${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" PAAF-Clubs-Filles.apk --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "PAAF Clubs Filles $TAG" --notes "APK compilé automatiquement. Lien permanent : https://github.com/${GITHUB_REPOSITORY}/releases/latest/download/PAAF-Clubs-Filles.apk" --latest
