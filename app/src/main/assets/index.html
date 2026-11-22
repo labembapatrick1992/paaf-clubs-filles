@@ -6,46 +6,66 @@
 <title>PAAF Clubs Filles</title>
 <style>
 :root {
-  --bg: #f6f4f7; --panel: #ffffff; --fg: #1f1a24; --muted: #6b6372; --line: #e3dde8;
-  --accent: #6b2d5c; --c0: #6b2d5c; --c1: #2f7f86; --c2: #d08a2e; --ok: #2e7d4f; --bad: #b3261e; --grid: #ece7f0;
+  --bg: #f6f4f7; --panel: #ffffff; --fg: #1f1a24; --muted: #6b6372; --line: #e3dde8; --accent: #6b2d5c;
+  --c0: #6b2d5c; --c1: #2f7f86; --c2: #d08a2e; --c3: #8a8392; --ok: #2e7d4f; --warn: #c27c0e; --bad: #b3261e;
+  --paaf-fond-barre: #f0ecf3; --paaf-fond-carte: #eef3f4; --paaf-grille: #d9e2e4; --paaf-texte-doux: #6b6372; --paaf-fond: #ffffff;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #16131a; --panel: #211d26; --fg: #f1edf4; --muted: #a59dad; --line: #3a3341;
-          --accent: #d08ac0; --c0: #d08ac0; --c1: #5fc0c8; --c2: #f0b45e; --ok: #6fd39a; --bad: #ff8a80; --grid: #2d2833; }
+  :root { --bg: #16131a; --panel: #211d26; --fg: #f1edf4; --muted: #a59dad; --line: #3a3341; --accent: #d08ac0;
+    --c0: #d08ac0; --c1: #5fc0c8; --c2: #f0b45e; --c3: #8f8898; --ok: #6fd39a; --warn: #f0b45e; --bad: #ff8a80;
+    --paaf-fond-barre: #2d2833; --paaf-fond-carte: #1b2427; --paaf-grille: #2c393c; --paaf-texte-doux: #a59dad; --paaf-fond: #211d26; }
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
 body { padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
-.wrap { max-width: 980px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 22px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 12px 14px 30px; display: flex; flex-direction: column; gap: 14px; }
 .bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .brand { font-weight: 700; font-size: 1.05rem; color: var(--accent); }
 .btns { display: flex; gap: 6px; }
-button { font: inherit; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 8px; padding: 7px 11px; }
+button { font: inherit; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 8px; padding: 7px 11px; cursor: pointer; }
 button.primary { background: var(--accent); color: #fff; border-color: var(--accent); width: 100%; padding: 11px; font-weight: 600; }
-h1 { font-size: 1.35rem; margin: 0 0 6px; font-weight: 600; }
-h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 600; }
+h1 { font-size: 1.25rem; margin: 0 0 4px; font-weight: 650; }
+h2 { font-size: 1rem; margin: 6px 0 4px; font-weight: 650; }
 .lede { margin: 0; line-height: 1.5; }
-.sub { color: var(--muted); font-size: .82rem; margin: 0 0 10px; }
-.maj { color: var(--muted); font-size: .8rem; margin-top: 6px; }
+.sub { color: var(--muted); font-size: .8rem; margin: 0 0 8px; }
+.maj { color: var(--muted); font-size: .78rem; margin-top: 4px; }
+.filtres { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; }
+.filtres summary { font-weight: 600; font-size: .88rem; cursor: pointer; }
+.filtres .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 10px; }
+.filtres label { display: flex; flex-direction: column; gap: 3px; font-size: .74rem; color: var(--muted); }
+select { font: inherit; font-size: .86rem; padding: 7px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); width: 100%; }
+.actifs { font-size: .76rem; color: var(--muted); margin-top: 6px; }
+.onglets { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; position: sticky; top: 0; background: var(--bg); z-index: 3; padding-top: 6px; }
+.onglets button { white-space: nowrap; border-radius: 999px; font-size: .84rem; padding: 7px 13px; }
+.onglets button[aria-selected="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+section.onglet { display: flex; flex-direction: column; gap: 12px; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
-.card .lab { font-size: .78rem; color: var(--muted); font-weight: 600; }
-.card .val { font-size: 1.7rem; font-variant-numeric: tabular-nums; }
-.card .del { font-size: .76rem; font-variant-numeric: tabular-nums; min-height: 1em; }
-.card .cib { font-size: .74rem; color: var(--muted); }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 11px 12px; display: flex; flex-direction: column; gap: 3px; }
+.card .lab { font-size: .76rem; color: var(--muted); font-weight: 600; }
+.card .val { font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+.card .val small { font-size: .85rem; color: var(--muted); font-weight: 400; }
+.card .del { font-size: .74rem; font-variant-numeric: tabular-nums; min-height: 1em; }
+.card .cib { font-size: .72rem; color: var(--muted); }
 .good { color: var(--ok); } .bad { color: var(--bad); } .flat { color: var(--muted); }
-.chart { position: relative; width: 100%; min-height: 260px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
-.chart svg text { fill: var(--muted); font-size: 11px; }
-.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: .78rem; color: var(--muted); margin-bottom: 8px; }
-.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
-select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); margin-bottom: 8px; max-width: 100%; }
-.scroll { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
-table { width: 100%; border-collapse: collapse; font-size: .8rem; font-variant-numeric: tabular-nums; }
-th { text-align: left; color: var(--muted); font-weight: 600; padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-td { padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.panneau { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.chart { position: relative; width: 100%; min-height: 60px; }
+.paaf-axe text, .paaf-lab, .paaf-repere { fill: var(--muted); font-size: 11px; font-family: inherit; }
+.paaf-axe line { stroke: var(--paaf-grille); } .paaf-axe path { stroke: var(--line); }
+.paaf-val { fill: var(--fg); font-size: 11px; font-variant-numeric: tabular-nums; }
+.paaf-tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--line); box-shadow: 0 4px 14px rgba(0,0,0,.18); border-radius: 8px; padding: 6px 9px; font-size: .74rem; white-space: nowrap; z-index: 4; }
+.paaf-vide { color: var(--muted); font-size: .85rem; margin: 8px 0; }
+.paaf-jauge { height: 6px; background: var(--paaf-fond-barre); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+.paaf-jauge-barre { height: 100%; background: var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: .76rem; color: var(--muted); margin-bottom: 6px; }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .78rem; font-variant-numeric: tabular-nums; }
+th { text-align: left; color: var(--muted); font-weight: 600; padding: 7px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 7px; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .num { text-align: right; }
-.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--line); box-shadow: 0 4px 14px rgba(0,0,0,.18); border-radius: 8px; padding: 6px 9px; font-size: .75rem; white-space: nowrap; z-index: 2; }
-details { font-size: .8rem; } details dt { font-weight: 600; margin-top: 8px; } details dd { margin: 0; color: var(--muted); }
+.deux-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.fiche { font-size: .84rem; line-height: 1.5; }
+.note { font-size: .78rem; color: var(--muted); }
 .screen { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .box { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
 .box input[type=password] { font: inherit; padding: 11px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); }
@@ -55,6 +75,8 @@ details { font-size: .8rem; } details dt { font-weight: 600; margin-top: 8px; } 
 </style>
 <script src="d3.min.js"></script>
 <script src="config.js"></script>
+<script src="moteur.js"></script>
+<script src="rendu.js"></script>
 </head>
 <body>
 
@@ -78,341 +100,358 @@ details { font-size: .8rem; } details dt { font-weight: 600; margin-top: 8px; } 
 <main id="tableau" class="wrap" hidden>
   <div class="bar">
     <span class="brand">PAAF Clubs Filles</span>
-    <span class="btns"><button id="btn-actualiser">↻ Actualiser</button><button id="btn-verrou">🔒</button></span>
+    <span class="btns"><button id="btn-actualiser" aria-label="Actualiser les données">↻</button><button id="btn-verrou" aria-label="Verrouiller">🔒</button></span>
   </div>
-
   <header>
-    <h1>Suivi mensuel des clubs des filles</h1>
+    <h1>Suivi des clubs des filles</h1>
     <p class="lede" id="lede"></p>
     <p class="maj" id="maj"></p>
   </header>
 
-  <section>
-    <h2>Indicateurs du mois</h2>
-    <p class="sub" id="kpi-sous-titre"></p>
-    <div class="grid" id="kpis"></div>
+  <details class="filtres" id="filtres">
+    <summary>Filtres</summary>
+    <div class="grille">
+      <label>Mois<select data-filtre="mois"></select></label>
+      <label>Province<select data-filtre="province"></select></label>
+      <label>Milieu<select data-filtre="milieu"></select></label>
+      <label>Cohorte<select data-filtre="cohorte"></select></label>
+      <label>Tranche d'âge<select data-filtre="tranche"></select></label>
+      <label>Superviseure<select data-filtre="superviseure"></select></label>
+      <label>École<select data-filtre="ecole"></select></label>
+    </div>
+    <p class="actifs"><button id="btn-reinit" type="button">Effacer les filtres</button></p>
+  </details>
+  <p class="actifs" id="filtres-actifs"></p>
+
+  <nav class="onglets" role="tablist" aria-label="Rubriques">
+    <button role="tab" data-onglet="vue" aria-selected="true">Vue d'ensemble</button>
+    <button role="tab" data-onglet="carte" aria-selected="false">Carte</button>
+    <button role="tab" data-onglet="oeuvre" aria-selected="false">Mise en œuvre</button>
+    <button role="tab" data-onglet="filles" aria-selected="false">Les filles</button>
+    <button role="tab" data-onglet="qualite" aria-selected="false">Qualité</button>
+    <button role="tab" data-onglet="formation" aria-selected="false">Formation</button>
+    <button role="tab" data-onglet="resultats" aria-selected="false">Résultats</button>
+    <button role="tab" data-onglet="protection" aria-selected="false">Protection</button>
+  </nav>
+
+  <section class="onglet" id="onglet-vue">
+    <div class="grid" id="kpi-cibles"></div>
+    <div class="grid" id="kpi-mois"></div>
+    <div class="panneau"><h2>Évolution mois par mois</h2><div class="legend" id="leg-vue"></div><div class="chart" id="g-vue"></div></div>
+    <div class="panneau"><h2>Alertes du mois</h2><p class="sub">Clubs ou superviseures qui demandent une action.</p>
+      <div class="scroll"><table><thead><tr><th>Alerte</th><th>Club / superviseure</th><th>Détail</th><th class="num">Valeur</th></tr></thead><tbody id="t-alertes"></tbody></table></div></div>
   </section>
 
-  <section>
-    <h2>Exécution et participation, mois par mois</h2>
-    <p class="sub">Séances tenues ÷ séances prévues ; présences ÷ (inscrites × séances tenues).</p>
-    <div class="legend" id="leg-tendance"></div>
-    <div class="chart" id="graph-tendance"></div>
+  <section class="onglet" id="onglet-carte" hidden>
+    <div class="panneau"><h2>Établissements avec clubs des filles</h2><p class="sub">Un point par école (GPS de la fiche F1). Touchez un point pour voir sa fiche.</p>
+      <div class="legend" id="leg-carte"></div><div class="chart" id="g-carte"></div><div class="fiche" id="fiche-ecole"></div></div>
+    <div class="panneau"><h2>Liste des écoles</h2>
+      <div class="scroll"><table><thead><tr><th>École</th><th>Province</th><th>Milieu</th><th>État</th><th class="num">Clubs actifs</th><th class="num">Filles</th><th class="num">Participation</th></tr></thead><tbody id="t-ecoles"></tbody></table></div></div>
   </section>
 
-  <section>
-    <h2>Résultats chez les filles (questionnaire anonyme F5)</h2>
-    <p class="sub" id="enq-gain"></p>
-    <select id="enq-indic" aria-label="Indicateur de l'enquête">
-      <option value="score_connaissances_pct">Score de connaissances (%)</option>
-      <option value="connait_services_pct">Connaît au moins 2 sources d'aide (%)</option>
-    </select>
-    <div class="legend" id="leg-enquete"></div>
-    <div class="chart" id="graph-enquete"></div>
+  <section class="onglet" id="onglet-oeuvre" hidden>
+    <div class="grid" id="kpi-oeuvre"></div>
+    <div class="deux-col">
+      <div class="panneau"><h2>Couverture du curriculum</h2><p class="sub">Part moyenne des unités d'apprentissage déjà traitées par club, par module.</p><div class="chart" id="g-modules"></div></div>
+      <div class="panneau"><h2>Méthodes d'animation</h2><p class="sub">Part des séances du mois où la méthode a été utilisée.</p><div class="chart" id="g-methodes"></div></div>
+    </div>
+    <div class="panneau"><h2>Difficultés rencontrées</h2><p class="sub">Part des séances du mois où la difficulté a été signalée.</p><div class="chart" id="g-difficultes"></div></div>
+    <div class="panneau"><h2>Détail par club</h2><p class="sub">Classé de la participation la plus faible à la plus forte.</p>
+      <div class="scroll"><table><thead><tr><th>Club</th><th>Tranche</th><th>Superviseure</th><th>État</th><th class="num">Inscrites</th><th class="num">Séances</th><th class="num">Participation</th><th class="num">Assiduité</th><th class="num">UA</th><th class="num">Qualité</th></tr></thead><tbody id="t-clubs"></tbody></table></div></div>
   </section>
 
-  <section>
-    <h2>Par province et milieu</h2>
-    <p class="sub" id="prov-sous-titre"></p>
-    <div class="scroll"><table>
-      <thead><tr><th>Province – milieu</th><th class="num">Clubs</th><th class="num">Exécution %</th><th class="num">Participation %</th><th class="num">Supervision %</th><th class="num">Qualité %</th></tr></thead>
-      <tbody id="tab-province"></tbody>
-    </table></div>
+  <section class="onglet" id="onglet-filles" hidden>
+    <div class="grid" id="kpi-filles"></div>
+    <div class="panneau"><h2>Participation et assiduité</h2><div class="legend" id="leg-filles"></div><div class="chart" id="g-filles"></div></div>
+    <div class="deux-col">
+      <div class="panneau"><h2>Âge des filles inscrites</h2><div class="chart" id="g-age"></div></div>
+      <div class="panneau"><h2>Classe</h2><div class="chart" id="g-classe"></div></div>
+    </div>
+    <div class="panneau"><h2>Situations de vulnérabilité déclarées</h2><p class="sub">Une fille peut en déclarer plusieurs.</p><div class="chart" id="g-vul"></div></div>
   </section>
 
-  <section>
-    <h2>Clubs à suivre en priorité</h2>
-    <p class="sub">Les 12 clubs opérationnels où la participation a été la plus faible ce mois-ci.</p>
-    <div class="scroll"><table>
-      <thead><tr><th>Club</th><th>Province</th><th>Milieu</th><th>Superviseure</th><th class="num">Participation %</th><th class="num">Séances (sur 4)</th><th class="num">Qualité %</th></tr></thead>
-      <tbody id="tab-alerte"></tbody>
-    </table></div>
+  <section class="onglet" id="onglet-qualite" hidden>
+    <div class="grid" id="kpi-qualite"></div>
+    <div class="deux-col">
+      <div class="panneau"><h2>Grille d'observation</h2><p class="sub">Score moyen par critère (0 à 2, ramené sur 100), visites du mois.</p><div class="chart" id="g-criteres"></div></div>
+      <div class="panneau"><h2>Actions correctives du mois</h2><p class="sub">Problèmes relevés par catégorie.</p><div class="chart" id="g-actions"></div></div>
+    </div>
+    <div class="panneau"><h2>Supervision et qualité, mois par mois</h2><div class="legend" id="leg-qualite"></div><div class="chart" id="g-qualite"></div></div>
+    <div class="panneau"><h2>Par superviseure</h2>
+      <div class="scroll"><table><thead><tr><th>Superviseure</th><th class="num">Clubs</th><th class="num">Visités</th><th class="num">Couverture</th><th class="num">Qualité</th><th class="num">Actions</th><th class="num">Clôture</th></tr></thead><tbody id="t-sup"></tbody></table></div></div>
   </section>
 
-  <details>
-    <summary>Définitions des indicateurs</summary>
-    <dl>
-      <dt>Club opérationnel</dt><dd>Animatrice formée et signataire du code de conduite, espace sûr sans hommes ni garçons, parents informés, au moins un service de référencement (F1).</dd>
-      <dt>Taux d'exécution</dt><dd>Séances tenues ÷ séances prévues.</dd>
-      <dt>Taux de participation</dt><dd>Présences ÷ (filles inscrites × séances tenues), d'après F3.</dd>
-      <dt>Couverture de supervision</dt><dd>Clubs ayant reçu une visite ou un appel de supervision dans le mois ÷ clubs opérationnels (F4).</dd>
-      <dt>Score de qualité</dt><dd>Grille d'observation à 10 critères notés de 0 à 2, ramenée sur 100.</dd>
-      <dt>Complétude et ponctualité</dt><dd>Rapports F3 reçus ÷ séances inscrites au registre ; rapports envoyés au plus tard 3 jours après la séance ÷ rapports reçus.</dd>
+  <section class="onglet" id="onglet-formation" hidden>
+    <div class="grid" id="kpi-formation"></div>
+    <div class="panneau"><h2>Scores avant et après formation</h2><p class="sub">Moyenne sur 20, par niveau de la cascade.</p><div class="legend" id="leg-formation"></div><div class="chart" id="g-formation"></div></div>
+    <div class="panneau"><h2>Détail par niveau</h2>
+      <div class="scroll"><table><thead><tr><th>Niveau</th><th class="num">Formé·es</th><th class="num">Femmes</th><th class="num">Hommes</th><th class="num">Pré-test</th><th class="num">Post-test</th><th class="num">Gain</th><th class="num">Présence</th><th class="num">Certifié·es</th><th class="num">Cible</th></tr></thead><tbody id="t-formation"></tbody></table></div></div>
+  </section>
+
+  <section class="onglet" id="onglet-resultats" hidden>
+    <div class="grid" id="kpi-resultats"></div>
+    <div class="panneau"><h2>Résultats par vague d'enquête</h2><p class="sub">Questionnaire anonyme F5 : score de connaissances global et par module (M1 à M5), puis connaissance des sources d'aide et sentiment de sécurité. Filtres utilisés : province et tranche d'âge.</p><div class="legend" id="leg-resultats"></div><div class="chart" id="g-resultats"></div></div>
+    <div class="panneau"><h2>Détail</h2>
+      <div class="scroll"><table><thead><tr><th>Vague</th><th class="num">Filles</th><th class="num">Connaissances</th><th class="num">Confiance en soi (/20)</th><th class="num">Sources d'aide</th><th class="num">Allô École</th><th class="num">Espace sûr</th></tr></thead><tbody id="t-resultats"></tbody></table></div></div>
+  </section>
+
+  <section class="onglet" id="onglet-protection" hidden>
+    <div class="grid" id="kpi-protection"></div>
+    <p class="note">Chiffres agrégés uniquement. Les situations individuelles restent dans le registre sécurisé de chaque club et ne sont jamais saisies dans les formulaires.</p>
+  </section>
+
+  <details class="panneau">
+    <summary>Définitions</summary>
+    <dl class="note">
+      <dt><b>Club opérationnel</b></dt><dd>Animatrice formée et signataire du code de conduite, espace sûr sans hommes ni garçons, parents informés, au moins un service de référencement (F1).</dd>
+      <dt><b>Exécution</b></dt><dd>Séances tenues (au plus les séances prévues) ÷ séances prévues.</dd>
+      <dt><b>Participation</b></dt><dd>Présences ÷ (filles inscrites × séances tenues).</dd>
+      <dt><b>Assiduité (rétention)</b></dt><dd>Filles présentes à au moins 75 % des séances tenues depuis le début ÷ filles inscrites.</dd>
+      <dt><b>Couverture du curriculum</b></dt><dd>Unités d'apprentissage déjà traitées ÷ 30 unités, moyenne des clubs.</dd>
+      <dt><b>Supervision</b></dt><dd>Clubs opérationnels visités (ou appelés) dans le mois ÷ clubs opérationnels.</dd>
+      <dt><b>Qualité</b></dt><dd>Grille d'observation à 10 critères notés de 0 à 2, ramenée sur 100.</dd>
+      <dt><b>Complétude, ponctualité, concordance</b></dt><dd>Rapports reçus ÷ séances du registre ; rapports envoyés en 3 jours ÷ reçus ; visites où l'écart de présence compté/registre est d'au plus 1.</dd>
     </dl>
   </details>
-  <p class="small">Données agrégées, sans aucun nom. Sources : formulaires SurveyCTO F1 à F5.</p>
+  <p class="note">Données agrégées, sans aucun nom. Sources : formulaires SurveyCTO F1 à F6.</p>
 </main>
 
 <script>
 (function () {
   "use strict";
-  var CIBLE_CLUBS = 800;
-  var URL_DONNEES = window.PAAF_DATA_URL || "";
-  var CLE_CACHE = "paaf_donnees_chiffrees", CLE_MDP = "paaf_mdp";
-  var MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-  var fr = d3.formatLocale({ decimal: ",", thousands: " ", grouping: [3], currency: ["", ""] });
-  var fint = fr.format(",d"), fdec = fr.format(",.1f");
+  var P = window.PAAF, R = window.PAAF_RENDU;
+  var URL_DONNEES = window.PAAF_DATA_URL || "", CLE_CACHE = "paaf_donnees_chiffrees", CLE_MDP = "paaf_mdp", CLE_FILTRES = "paaf_filtres";
   var $ = function (id) { return document.getElementById(id); };
-  var etat = { donnees: null };
+  var etat = { tdb: null, onglet: "vue", f: {} };
+  try { etat.f = JSON.parse(localStorage.getItem(CLE_FILTRES) || "{}") || {}; } catch (e) { etat.f = {}; }
 
-  function stockage(cle, val) {
-    try { if (val === undefined) return localStorage.getItem(cle); if (val === null) localStorage.removeItem(cle); else localStorage.setItem(cle, val); } catch (e) { return null; }
-  }
-  function ecran(nom) {
-    ["ecran-attente", "ecran-mdp", "ecran-erreur", "tableau"].forEach(function (id) { $(id).hidden = id !== nom; });
-  }
+  function stockage(cle, val) { try { if (val === undefined) return localStorage.getItem(cle); if (val === null) localStorage.removeItem(cle); else localStorage.setItem(cle, val); } catch (e) { return null; } }
+  function ecran(nom) { ["ecran-attente", "ecran-mdp", "ecran-erreur", "tableau"].forEach(function (id) { $(id).hidden = id !== nom; }); }
   function erreur(msg) { $("erreur-msg").textContent = msg; ecran("ecran-erreur"); }
-  function moisLabel(m) { var p = String(m).split("-"); return MOIS[+p[1] - 1] + " " + p[0]; }
-  function moisCourt(m) { var p = String(m).split("-"); return MOIS[+p[1] - 1].slice(0, 4) + ". " + p[0].slice(2); }
-  function r1(x) { return isFinite(x) ? Math.round(x * 10) / 10 : null; }
   function b64(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  function couleurs() { var cs = getComputedStyle(document.documentElement); var g = function (v) { return cs.getPropertyValue(v).trim(); };
+    return { c0: g("--c0"), c1: g("--c1"), c2: g("--c2"), c3: g("--c3"), ok: g("--ok"), warn: g("--warn"), bad: g("--bad") }; }
 
-  // ---------- chiffrement : PBKDF2-SHA256 + AES-256-GCM (identique à chiffrer_donnees.py)
-  async function dechiffrer(texteChiffre, mdp) {
-    var f = JSON.parse(texteChiffre);
+  async function dechiffrer(texte, mdp) {
+    var f = JSON.parse(texte);
     if (f.format !== "paaf-enc-1") throw new Error("format");
     var base = await crypto.subtle.importKey("raw", new TextEncoder().encode(mdp), "PBKDF2", false, ["deriveKey"]);
-    var cle = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(f.salt), iterations: f.iter, hash: "SHA-256" },
-      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    var cle = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(f.salt), iterations: f.iter, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
     var clair = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(f.iv) }, cle, b64(f.ct));
+    if (f.z) clair = await new Response(new Blob([clair]).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer();
     return JSON.parse(new TextDecoder().decode(clair));
   }
-
   async function telecharger() {
     if (!URL_DONNEES) return null;
-    try {
-      var rep = await fetch(URL_DONNEES + "?t=" + Date.now(), { cache: "no-store" });
-      if (!rep.ok) return null;
-      var txt = await rep.text();
-      JSON.parse(txt);
-      stockage(CLE_CACHE, txt);
-      return txt;
-    } catch (e) { return null; }
+    try { var r = await fetch(URL_DONNEES + "?t=" + Date.now(), { cache: "no-store" }); if (!r.ok) return null; var t = await r.text(); JSON.parse(t); stockage(CLE_CACHE, t); return t; } catch (e) { return null; }
   }
-
   async function demarrer() {
     ecran("ecran-attente");
-    $("attente-msg").textContent = "Chargement des données…";
-    if (!window.crypto || !crypto.subtle) { erreur("Cet appareil ne permet pas de déchiffrer les données (navigateur trop ancien)."); return; }
-    var txt = await telecharger();
-    etat.horsLigne = !txt;
-    if (!txt) txt = stockage(CLE_CACHE);
-    if (!txt) {
-      erreur(URL_DONNEES ? "Impossible de télécharger les données. Vérifiez la connexion Internet puis réessayez."
-                         : "L'adresse des données n'est pas configurée dans cette version de l'application.");
-      return;
-    }
-    etat.chiffre = txt;
+    if (!window.crypto || !crypto.subtle) return erreur("Cet appareil ne permet pas de déchiffrer les données (navigateur trop ancien).");
+    var t = await telecharger(); etat.horsLigne = !t; if (!t) t = stockage(CLE_CACHE);
+    if (!t) return erreur(URL_DONNEES ? "Impossible de télécharger les données. Vérifiez la connexion Internet puis réessayez." : "L'adresse des données n'est pas configurée dans cette version de l'application.");
+    etat.chiffre = t;
     var mdp = stockage(CLE_MDP);
-    if (mdp) {
-      try { afficher(await dechiffrer(txt, mdp)); return; } catch (e) { stockage(CLE_MDP, null); }
-    }
+    if (mdp) { try { return ouvrir(await dechiffrer(t, mdp)); } catch (e) { stockage(CLE_MDP, null); } }
     $("mdp").value = ""; $("mdp-err").textContent = ""; ecran("ecran-mdp");
   }
-
   $("form-mdp").addEventListener("submit", async function (ev) {
-    ev.preventDefault();
-    $("mdp-err").textContent = "Vérification…";
-    var mdp = $("mdp").value;
-    try {
-      var d = await dechiffrer(etat.chiffre, mdp);
-      if ($("retenir").checked) stockage(CLE_MDP, mdp);
-      afficher(d);
-    } catch (e) { $("mdp-err").textContent = "Mot de passe incorrect."; }
+    ev.preventDefault(); $("mdp-err").textContent = "Vérification…";
+    try { var d = await dechiffrer(etat.chiffre, $("mdp").value); if ($("retenir").checked) stockage(CLE_MDP, $("mdp").value); ouvrir(d); }
+    catch (e) { $("mdp-err").textContent = "Mot de passe incorrect."; }
   });
   $("btn-reessayer").addEventListener("click", demarrer);
   $("btn-actualiser").addEventListener("click", demarrer);
-  $("btn-verrou").addEventListener("click", function () { stockage(CLE_MDP, null); $("mdp").value = ""; $("mdp-err").textContent = ""; ecran("ecran-mdp"); });
-  $("enq-indic").addEventListener("change", function () { if (etat.donnees) dessinerEnquete(); });
-  var minuterie;
-  window.addEventListener("resize", function () { clearTimeout(minuterie); minuterie = setTimeout(function () { if (etat.donnees) { dessinerTendance(); dessinerEnquete(); } }, 200); });
+  $("btn-verrou").addEventListener("click", function () { stockage(CLE_MDP, null); $("mdp").value = ""; ecran("ecran-mdp"); });
 
-  // ---------- calculs (mêmes définitions que le tableau de bord en ligne)
-  function calculer(d) {
-    var cm = d3.csvParse(d.club_mois || ""), enq = d3.csvParse(d.enquete_filles || "");
-    var mensuel = Array.from(d3.group(cm, function (r) { return r.mois; }), function (e) {
-      var mois = e[0], rs = e[1];
-      var s = function (k) { return d3.sum(rs, function (r) { return +r[k] || 0; }); };
-      var vis = rs.filter(function (r) { return r.visite_presentielle === "1"; });
-      var ops = s("club_operationnel");
-      return { mois: mois, clubs_ops: ops,
-        exec_pct: r1(s("seances_realisees") / s("seances_prevues") * 100),
-        part_pct: r1(s("presences") / s("presences_possibles") * 100),
-        part_h_pct: r1(s("presences_handicap") / s("presences_possibles_handicap") * 100),
-        sup_pct: r1(s("supervise") / ops * 100),
-        qual_moy: r1(d3.mean(vis, function (r) { return +r.score_qualite_pct; })),
-        complet_pct: r1(s("rapports_recus") / s("rapports_attendus") * 100),
-        ponct_pct: r1(s("rapports_a_temps") / s("rapports_recus") * 100) };
-    }).sort(function (a, b) { return d3.ascending(a.mois, b.mois); });
-    var dernier = d3.max(cm, function (r) { return r.mois; });
-    var duMois = cm.filter(function (r) { return r.mois === dernier; });
-    var province = Array.from(d3.group(duMois, function (r) { return r.province + " – " + r.milieu; }), function (e) {
-      var rs = e[1], s = function (k) { return d3.sum(rs, function (r) { return +r[k] || 0; }); };
-      var vis = rs.filter(function (r) { return r.visite_presentielle === "1"; });
-      return { groupe: e[0], clubs: rs.length,
-        exec_pct: r1(s("seances_realisees") / s("seances_prevues") * 100),
-        part_pct: r1(s("presences") / s("presences_possibles") * 100),
-        sup_pct: r1(s("supervise") / s("club_operationnel") * 100),
-        qual_moy: r1(d3.mean(vis, function (r) { return +r.score_qualite_pct; })) };
-    }).sort(function (a, b) { return d3.ascending(a.groupe, b.groupe); });
-    var alerte = duMois.filter(function (r) { return r.club_operationnel === "1" && +r.presences_possibles > 0; })
-      .map(function (r) { return { club: r.club, province: r.province, milieu: r.milieu, superviseure: r.superviseure,
-        part_pct: r1(+r.presences / +r.presences_possibles * 100), seances: +r.seances_realisees,
-        qualite: r.score_qualite_pct === "" ? null : +r.score_qualite_pct }; })
-      .sort(function (a, b) { return d3.ascending(a.part_pct, b.part_pct); }).slice(0, 12);
-    return { mensuel: mensuel, province: province, alerte: alerte, enquete: enq };
+  function ouvrir(tdb) {
+    if (!tdb || tdb.version !== 2) return erreur("Les données sont dans un ancien format. Relancez scto_vers_tableau.py (version 2), puis chiffrer_donnees.py, et déposez le nouveau fichier.");
+    etat.tdb = tdb; ecran("tableau");
+    var maj = tdb.maj ? new Date(tdb.maj) : null;
+    $("maj").textContent = (maj && !isNaN(maj) ? "Données mises à jour le " + maj.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "") + (etat.horsLigne ? " · hors ligne (dernière version enregistrée)" : "");
+    remplirFiltres(); dessiner();
   }
 
-  function afficher(d) {
-    etat.donnees = d;
-    etat.calc = calculer(d);
-    ecran("tableau");
-    var maj = d.maj ? new Date(d.maj) : null;
-    $("maj").textContent = (maj && !isNaN(maj) ? "Données mises à jour le " + maj.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "")
-      + (etat.horsLigne ? " · hors ligne : dernière version enregistrée sur l'appareil" : "");
-    remplirKpis(); dessinerTendance(); dessinerEnquete(); remplirTables();
-  }
-
-  function remplirKpis() {
-    var m = etat.calc.mensuel, cur = m[m.length - 1], prev = m.length > 1 ? m[m.length - 2] : null;
-    var lede = $("lede");
-    if (!cur) { lede.textContent = "Aucune donnée de club pour l'instant."; $("kpis").replaceChildren(); return; }
-    var phrase = "En " + moisLabel(cur.mois) + ", " + fint(cur.clubs_ops) + (cur.clubs_ops > 1 ? " clubs" : " club") + " sur " + fint(CIBLE_CLUBS) + (cur.clubs_ops > 1 ? " étaient opérationnels" : " était opérationnel");
-    if (cur.part_pct != null) phrase += " ; la participation des filles atteint " + fdec(cur.part_pct) + " %";
-    if (prev && cur.part_pct != null && prev.part_pct != null) {
-      var dlt = r1(cur.part_pct - prev.part_pct);
-      phrase += dlt > 0 ? ", en hausse de " + fdec(dlt) + " point sur le mois précédent" : dlt < 0 ? ", en baisse de " + fdec(-dlt) + " point sur le mois précédent" : ", stable par rapport au mois précédent";
-    } else if (!prev) phrase += " (premier mois de données)";
-    lede.textContent = phrase + ".";
-    $("kpi-sous-titre").textContent = "Mois de " + moisLabel(cur.mois) + (prev ? ", comparé à " + moisLabel(prev.mois) : "") + ".";
-    $("prov-sous-titre").textContent = "Mois de " + moisLabel(cur.mois) + ".";
-    var defs = [
-      ["clubs_ops", "Clubs opérationnels", "", "Cible : " + fint(CIBLE_CLUBS) + " clubs"],
-      ["exec_pct", "Exécution des séances", " %", "Cible : ≥ 90 %"],
-      ["part_pct", "Participation", " %", "Cible : ≥ 80 %"],
-      ["part_h_pct", "Participation des filles en situation de handicap", " %", "Cible : au moins le taux général"],
-      ["sup_pct", "Couverture de supervision", " %", "Cible : 100 %"],
-      ["qual_moy", "Qualité pédagogique", " %", "Cible : ≥ 75 %"],
-      ["complet_pct", "Complétude des rapports", " %", "Cible : ≥ 95 %"],
-      ["ponct_pct", "Rapports envoyés en 3 jours", " %", "Cible : ≥ 90 %"]];
-    var conteneur = $("kpis"); conteneur.replaceChildren();
-    defs.forEach(function (df) {
-      var v = cur[df[0]], p = prev ? prev[df[0]] : null;
-      var carte = document.createElement("div"); carte.className = "card";
-      var lab = document.createElement("span"); lab.className = "lab"; lab.textContent = df[1];
-      var val = document.createElement("span"); val.className = "val";
-      val.textContent = v == null ? "—" : (df[0] === "clubs_ops" ? fint(v) : fdec(v)) + df[2];
-      var del = document.createElement("span"); del.className = "del flat";
-      if (v != null && p != null) {
-        var e = r1(v - p);
-        del.textContent = (e > 0 ? "+" : e < 0 ? "−" : "±") + (df[0] === "clubs_ops" ? fint(Math.abs(e)) : fdec(Math.abs(e)) + " pt") + " vs mois précédent";
-        del.className = "del " + (e > 0 ? "good" : e < 0 ? "bad" : "flat");
-      } else del.textContent = "—";
-      var cib = document.createElement("span"); cib.className = "cib"; cib.textContent = df[3];
-      carte.append(lab, val, del, cib); conteneur.appendChild(carte);
+  // ---------- filtres
+  var NOMS_FILTRES = { mois: "Tous / dernier mois", province: "Toutes", milieu: "Tous", cohorte: "Toutes", tranche: "Toutes", superviseure: "Toutes", ecole: "Toutes" };
+  function remplirFiltres() {
+    var opts = P.options(etat.tdb);
+    document.querySelectorAll("select[data-filtre]").forEach(function (sel) {
+      var k = sel.dataset.filtre, liste = opts.filter(function (o) { return o.filtre === k; });
+      sel.replaceChildren(new Option(k === "mois" ? "Dernier mois disponible" : NOMS_FILTRES[k], ""));
+      liste.forEach(function (o) { sel.appendChild(new Option(o.label, o.valeur)); });
+      if (etat.f[k] && !liste.some(function (o) { return o.valeur === etat.f[k]; })) delete etat.f[k];
+      sel.value = etat.f[k] || "";
+      sel.onchange = function () { if (sel.value) etat.f[k] = sel.value; else delete etat.f[k]; stockage(CLE_FILTRES, JSON.stringify(etat.f)); dessiner(); };
     });
   }
+  $("btn-reinit").addEventListener("click", function () { etat.f = {}; stockage(CLE_FILTRES, "{}"); remplirFiltres(); dessiner(); });
 
-  function legende(id, items) {
-    var el = $(id); el.replaceChildren();
-    items.forEach(function (it) {
-      var s = document.createElement("span"), sw = document.createElement("i");
-      sw.className = "sw"; sw.style.background = it[1]; s.append(sw, document.createTextNode(it[0])); el.appendChild(s);
+  // ---------- onglets
+  document.querySelectorAll("[data-onglet]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      etat.onglet = b.dataset.onglet;
+      document.querySelectorAll("[data-onglet]").forEach(function (x) { x.setAttribute("aria-selected", x === b ? "true" : "false"); });
+      document.querySelectorAll("section.onglet").forEach(function (s) { s.hidden = s.id !== "onglet-" + etat.onglet; });
+      dessinerOnglet();
     });
+  });
+  var minuterie; window.addEventListener("resize", function () { clearTimeout(minuterie); minuterie = setTimeout(function () { if (etat.tdb) dessinerOnglet(); }, 200); });
+
+  // ---------- cartes de chiffres
+  function carte(cont, o) {
+    var d = document.createElement("div"); d.className = "card";
+    var l = document.createElement("span"); l.className = "lab"; l.textContent = o.lab;
+    var v = document.createElement("span"); v.className = "val"; v.textContent = o.val;
+    if (o.sur) { var s = document.createElement("small"); s.textContent = " / " + o.sur; v.appendChild(s); }
+    d.append(l, v);
+    if (o.jauge != null) { var j = document.createElement("div"); R.jauge(j, o.jauge[0], o.jauge[1]); d.appendChild(j); }
+    if (o.delta !== undefined) {
+      var e = document.createElement("span"); e.className = "del flat";
+      if (o.delta == null) e.textContent = etat.k.mois_precedent ? "—" : "premier mois";
+      else { var good = o.inverse ? o.delta < 0 : o.delta > 0; e.textContent = (o.delta > 0 ? "+" : o.delta < 0 ? "−" : "±") + (o.entier ? R.fint(Math.abs(o.delta)) : R.fdec(Math.abs(o.delta)) + " pt") + " vs mois préc."; e.className = "del " + (o.delta === 0 ? "flat" : good ? "good" : "bad"); }
+      d.appendChild(e);
+    }
+    if (o.cib) { var c = document.createElement("span"); c.className = "cib"; c.textContent = o.cib; d.appendChild(c); }
+    cont.appendChild(d);
   }
-  function couleurs() { var cs = getComputedStyle(document.documentElement); return ["--c0", "--c1", "--c2"].map(function (v) { return cs.getPropertyValue(v).trim(); }); }
-  function infobulle(el) { var t = el.querySelector(".tip"); if (!t) { t = document.createElement("div"); t.className = "tip"; t.hidden = true; el.appendChild(t); } return t; }
-  function placer(tip, el, ev) {
-    var b = el.getBoundingClientRect(), x = ev.clientX - b.left, y = ev.clientY - b.top;
-    tip.style.left = Math.max(0, Math.min(x + 10, el.clientWidth - tip.offsetWidth - 4)) + "px";
-    tip.style.top = Math.max(0, y - 30) + "px";
+  function cartes(id, liste) { var c = $(id); c.replaceChildren(); liste.forEach(function (o) { carte(c, o); }); }
+  var tout = {};
+  function tableLimitee(id, rows, cols, cle, max) {
+    var tb = $(id), extra = tb.closest(".panneau").querySelector(".plus");
+    if (!extra) { extra = document.createElement("button"); extra.className = "plus"; extra.type = "button"; extra.style.marginTop = "8px"; tb.closest(".panneau").appendChild(extra); }
+    var lim = tout[id] ? rows : rows.slice(0, max);
+    R.table(tb, lim, cols, cle);
+    extra.hidden = rows.length <= max;
+    extra.textContent = tout[id] ? "Afficher moins" : "Afficher les " + R.fint(rows.length) + " lignes";
+    extra.onclick = function () { tout[id] = !tout[id]; tableLimitee(id, rows, cols, cle, max); };
+  }
+  function legende(id, items) { var el = $(id); el.replaceChildren(); items.forEach(function (it) { var s = document.createElement("span"), sw = document.createElement("i"); sw.className = "sw"; sw.style.background = it[1]; s.append(sw, document.createTextNode(it[0])); el.appendChild(s); }); }
+
+  function dessiner() {
+    var f = etat.f, tdb = etat.tdb;
+    etat.k = P.kpi(tdb, f)[0] || null;
+    var actifs = Object.keys(f).map(function (k) { return k === "mois" ? P.moisLabel(f[k]) : f[k]; });
+    $("filtres-actifs").textContent = actifs.length ? "Filtres actifs : " + actifs.join(" · ") : ""; $("filtres-actifs").hidden = !actifs.length;
+    var k = etat.k;
+    if (!k) { $("lede").textContent = "Aucune donnée de club pour l'instant."; return dessinerOnglet(); }
+    var ph = "En " + k.mois_label + ", " + R.fint(k.clubs_ops) + (k.clubs_ops > 1 ? " clubs" : " club") + " sur " + R.fint(k.cible_clubs) + (k.clubs_ops > 1 ? " étaient opérationnels" : " était opérationnel")
+      + " et " + R.fint(k.filles) + " filles inscrites";
+    if (k.part_pct != null) ph += " ; participation de " + R.pc(k.part_pct);
+    if (k.d_part_pct != null) ph += k.d_part_pct > 0 ? " (+" + R.fdec(k.d_part_pct) + " pt)" : k.d_part_pct < 0 ? " (−" + R.fdec(-k.d_part_pct) + " pt)" : " (stable)";
+    $("lede").textContent = ph + ".";
+    dessinerOnglet();
   }
 
-  function dessinerTendance() {
-    var el = $("graph-tendance"), rows = etat.calc.mensuel, c = couleurs();
-    var series = [["exec_pct", "Exécution", c[0]], ["part_pct", "Participation", c[1]], ["part_h_pct", "Handicap", c[2]]];
-    legende("leg-tendance", [["Taux d'exécution", c[0]], ["Taux de participation", c[1]], ["Participation des filles en situation de handicap", c[2]]]);
-    el.replaceChildren();
-    if (!rows.length) { el.textContent = "Pas encore de données."; return; }
-    var W = Math.max(280, el.clientWidth - 16), H = 250, ml = 44;
-    var svg = d3.select(el).append("svg").attr("width", "100%").attr("height", H).attr("viewBox", "0 0 " + W + " " + H)
-      .attr("role", "img").attr("aria-label", "Évolution mensuelle de l'exécution et de la participation");
-    var y = d3.scaleLinear().domain([0, 100]).range([H - 26, 10]);
-    var x = d3.scalePoint().domain(rows.map(function (r) { return r.mois; })).range([ml + 10, W - 44]).padding(rows.length === 1 ? 0.5 : 0);
-    svg.append("g").attr("transform", "translate(" + ml + ",0)").call(d3.axisLeft(y).ticks(5).tickSize(-(W - ml - 10)).tickFormat(function (v) { return v + " %"; }))
-      .call(function (g) { g.select(".domain").remove(); g.selectAll("line").style("stroke", "var(--grid)"); });
-    svg.append("g").attr("transform", "translate(0," + (H - 26) + ")").call(d3.axisBottom(x).tickFormat(moisCourt).tickSize(0).tickPadding(9))
-      .call(function (g) { g.select(".domain").style("stroke", "var(--line)"); });
-    series.forEach(function (s) {
-      var pts = rows.filter(function (r) { return r[s[0]] != null; });
-      svg.append("path").datum(pts).attr("fill", "none").style("stroke", s[2]).attr("stroke-width", 2)
-        .attr("d", d3.line().x(function (r) { return x(r.mois); }).y(function (r) { return y(r[s[0]]); }));
-      svg.append("g").selectAll("circle").data(pts).join("circle").attr("r", 3.5).attr("cx", function (r) { return x(r.mois); })
-        .attr("cy", function (r) { return y(r[s[0]]); }).style("fill", s[2]);
-      var der = pts[pts.length - 1];
-      if (der) svg.append("text").attr("x", x(der.mois) + 7).attr("y", y(der[s[0]]) + 4).text(fdec(der[s[0]]));
-    });
-    var tip = infobulle(el), pas = rows.length > 1 ? x.step() : W;
-    svg.append("g").selectAll("rect").data(rows).join("rect").attr("x", function (r) { return x(r.mois) - pas / 2; }).attr("width", pas)
-      .attr("y", 0).attr("height", H - 26).style("fill", "transparent")
-      .on("pointerenter pointermove", function (ev, r) {
-        tip.hidden = false; tip.replaceChildren();
-        var h = document.createElement("div"); h.style.fontWeight = "600"; h.textContent = moisLabel(r.mois); tip.appendChild(h);
-        series.forEach(function (s) { var l = document.createElement("div"); l.textContent = s[1] + " : " + (r[s[0]] == null ? "—" : fdec(r[s[0]]) + " %"); tip.appendChild(l); });
-        placer(tip, el, ev);
-      }).on("pointerleave", function () { tip.hidden = true; });
+  function dessinerOnglet() {
+    var f = etat.f, tdb = etat.tdb, k = etat.k || {}, c = couleurs(), o = etat.onglet;
+    if (o === "vue") {
+      cartes("kpi-cibles", [
+        { lab: "Écoles avec clubs actifs", val: R.nb(k.ecoles_actives), sur: R.fint(k.cible_ecoles || 400), jauge: [k.ecoles_actives, k.cible_ecoles] },
+        { lab: "Clubs opérationnels", val: R.nb(k.clubs_ops), sur: R.fint(k.cible_clubs || 800), jauge: [k.clubs_ops, k.cible_clubs] },
+        { lab: "Filles inscrites", val: R.nb(k.filles), sur: R.fint(k.cible_filles || 20000), jauge: [k.filles, k.cible_filles] }]);
+      cartes("kpi-mois", [
+        { lab: "Participation", val: R.pc(k.part_pct), delta: k.d_part_pct, cib: "Cible ≥ 80 %" },
+        { lab: "Exécution des séances", val: R.pc(k.exec_pct), delta: k.d_exec_pct, cib: "Cible ≥ 90 %" },
+        { lab: "Assiduité (≥ 75 % des séances)", val: R.pc(k.assid_pct), delta: k.d_assid_pct, cib: "Cible ≥ 85 %" },
+        { lab: "Qualité pédagogique", val: R.pc(k.qual_moy), delta: k.d_qual_moy, cib: "Cible ≥ 75 %" },
+        { lab: "Supervision", val: R.pc(k.sup_pct), delta: k.d_sup_pct, cib: "Cible 100 %" },
+        { lab: "Complétude des rapports", val: R.pc(k.complet_pct), delta: k.d_complet_pct, cib: "Cible ≥ 95 %" }]);
+      legende("leg-vue", [["Participation", c.c0], ["Exécution", c.c1], ["Assiduité", c.c2]]);
+      R.courbes($("g-vue"), P.mensuel(tdb, f), [{ k: "part_pct", label: "Participation", couleur: c.c0 }, { k: "exec_pct", label: "Exécution", couleur: c.c1 }, { k: "assid_pct", label: "Assiduité", couleur: c.c2 }]);
+      tableLimitee("t-alertes", P.alertes(tdb, f), [{ k: "type" }, { k: "cible" }, { k: "detail" }, { k: "valeur", num: 1, fmt: function (v, r) { return r.type === "Participation faible" ? R.pc(v) : R.nb(v); } }], "id", 12);
+    }
+    if (o === "carte") {
+      var etats = { deux: c.ok, un: c.warn, aucun: c.c3, alerte: c.bad };
+      legende("leg-carte", Object.keys(R.ETATS).map(function (e) { return [R.ETATS[e], etats[e]]; }));
+      var ec = P.ecoles(tdb, f);
+      R.carte($("g-carte"), ec, { couleurs: etats, choisir: function (r) { ficheEcole(r); } });
+      tableLimitee("t-ecoles", ec, [{ k: "ecole" }, { k: "province" }, { k: "milieu" }, { k: "etat", fmt: function (v) { return R.ETATS[v]; } }, { k: "clubs_ops", num: 1, fmt: function (v, r) { return v + " / " + r.clubs; } }, { k: "filles", num: 1, fmt: R.nb }, { k: "part_pct", num: 1, fmt: R.pc }], "ecole", 15);
+    }
+    if (o === "oeuvre") {
+      cartes("kpi-oeuvre", [
+        { lab: "Séances tenues ce mois", val: R.nb(k.seances) }, { lab: "Exécution", val: R.pc(k.exec_pct), delta: k.d_exec_pct },
+        { lab: "Durée moyenne d'une séance", val: k.duree_moy == null ? "—" : R.fint(k.duree_moy) + " min" },
+        { lab: "Couverture du curriculum", val: R.pc(k.ua_pct), delta: k.d_ua_pct, cib: "30 unités au total" }]);
+      R.barresH($("g-modules"), P.modules(tdb, f).map(function (m) { return { label: m.label, valeur: m.couverture_pct, n: m.seances }; }), { max: 100, fmt: R.pc, couleur: c.c0, aria: "Couverture du curriculum par module", detail: function (r) { return [R.nb(r.n) + " séances ce mois"]; } });
+      R.barresH($("g-methodes"), P.comptes(tdb, f, "methode").map(function (m) { return { label: m.label, valeur: m.pct, n: m.n }; }), { max: 100, fmt: R.pc, couleur: c.c1, aria: "Méthodes utilisées" });
+      R.barresH($("g-difficultes"), P.comptes(tdb, f, "difficulte").map(function (m) { return { label: m.label, valeur: m.pct }; }), { max: 100, fmt: R.pc, couleur: c.c2, aria: "Difficultés rencontrées" });
+      tableLimitee("t-clubs", P.clubs(tdb, f), [{ k: "club" }, { k: "tranche" }, { k: "superviseure" }, { k: "etat" }, { k: "inscrites", num: 1, fmt: R.nb }, { k: "seances", num: 1, fmt: function (v, r) { return v + " / " + (r.prevues == null ? "—" : r.prevues); } }, { k: "part_pct", num: 1, fmt: R.pc }, { k: "assid_pct", num: 1, fmt: R.pc }, { k: "ua", num: 1, fmt: function (v) { return v + " / 30"; } }, { k: "qualite", num: 1, fmt: R.pc }], "club", 20);
+    }
+    if (o === "filles") {
+      cartes("kpi-filles", [
+        { lab: "Filles inscrites", val: R.nb(k.filles), sur: R.fint(k.cible_filles || 20000), jauge: [k.filles, k.cible_filles] },
+        { lab: "En situation de handicap", val: R.pc(k.handicap_pct) },
+        { lab: "Participation", val: R.pc(k.part_pct), delta: k.d_part_pct },
+        { lab: "Participation (handicap)", val: R.pc(k.part_h_pct), delta: k.d_part_h_pct, cib: "Au moins le taux général" },
+        { lab: "Assiduité", val: R.pc(k.assid_pct), delta: k.d_assid_pct, cib: "Cible ≥ 85 %" },
+        { lab: "Assiduité (handicap)", val: R.pc(k.assid_h_pct) }]);
+      legende("leg-filles", [["Participation", c.c0], ["Participation (handicap)", c.c2], ["Assiduité", c.c1]]);
+      R.courbes($("g-filles"), P.mensuel(tdb, f), [{ k: "part_pct", label: "Participation", couleur: c.c0 }, { k: "part_h_pct", label: "Participation (handicap)", couleur: c.c2 }, { k: "assid_pct", label: "Assiduité", couleur: c.c1 }]);
+      var pr = function (dim) { return P.profil(tdb, f, dim).map(function (r) { return { label: r.label, valeur: r.pct, n: r.n }; }); };
+      var det = function (r) { return [R.nb(r.n) + " filles"]; };
+      R.barresH($("g-age"), pr("age"), { fmt: R.pc, couleur: c.c0, aria: "Âge des filles", detail: det });
+      R.barresH($("g-classe"), pr("classe"), { fmt: R.pc, couleur: c.c1, aria: "Classe des filles", detail: det });
+      R.barresH($("g-vul"), pr("vulnerabilite").filter(function (r) { return r.label !== "Aucune / non déclarée"; }), { fmt: R.pc, couleur: c.c2, aria: "Vulnérabilités", detail: det });
+    }
+    if (o === "qualite") {
+      cartes("kpi-qualite", [
+        { lab: "Supervision", val: R.pc(k.sup_pct), delta: k.d_sup_pct, cib: "Cible 100 %" },
+        { lab: "Qualité pédagogique", val: R.pc(k.qual_moy), delta: k.d_qual_moy, cib: "Cible ≥ 75 %" },
+        { lab: "Complétude des rapports", val: R.pc(k.complet_pct), delta: k.d_complet_pct, cib: "Cible ≥ 95 %" },
+        { lab: "Ponctualité (3 jours)", val: R.pc(k.ponct_pct), delta: k.d_ponct_pct, cib: "Cible ≥ 90 %" },
+        { lab: "Concordance registre", val: R.pc(k.concord_pct), cib: "Cible ≥ 90 %" },
+        { lab: "Actions clôturées", val: R.pc(k.actions_cloture_pct), cib: R.nb(k.actions_nouvelles) + " nouvelles ce mois" }]);
+      R.barresH($("g-criteres"), P.criteres(tdb, f).map(function (r) { return { label: r.label, valeur: r.score_pct }; }), { max: 100, fmt: R.pc, couleur: c.c0, aria: "Score par critère" });
+      R.barresH($("g-actions"), P.comptes(tdb, f, "action").map(function (r) { return { label: r.label, valeur: r.n }; }), { fmt: R.nb, couleur: c.c2, aria: "Actions correctives par catégorie" });
+      legende("leg-qualite", [["Supervision", c.c1], ["Qualité", c.c0], ["Complétude", c.c2]]);
+      R.courbes($("g-qualite"), P.mensuel(tdb, f), [{ k: "sup_pct", label: "Supervision", couleur: c.c1 }, { k: "qual_moy", label: "Qualité", couleur: c.c0 }, { k: "complet_pct", label: "Complétude", couleur: c.c2 }]);
+      R.table($("t-sup"), P.superviseures(tdb, f), [{ k: "superviseure" }, { k: "clubs", num: 1, fmt: R.nb }, { k: "visites", num: 1, fmt: R.nb }, { k: "sup_pct", num: 1, fmt: R.pc }, { k: "qual_moy", num: 1, fmt: R.pc }, { k: "actions", num: 1, fmt: R.nb }, { k: "cloture_pct", num: 1, fmt: R.pc }], "superviseure");
+    }
+    if (o === "formation") {
+      var fo = P.formation(tdb, f), ani = fo.find(function (r) { return r.niveau === "animatrice"; }) || {}, prov = fo.find(function (r) { return r.niveau === "provincial"; }) || {};
+      cartes("kpi-formation", [
+        { lab: "Animatrices certifiées", val: R.nb(ani.certifies), sur: "800", jauge: [ani.certifies || 0, 800] },
+        { lab: "Formateurs provinciaux certifiés", val: R.nb(prov.certifies), sur: "80", jauge: [prov.certifies || 0, 80] },
+        { lab: "Gain moyen (animatrices)", val: ani.gain == null ? "—" : (ani.gain > 0 ? "+" : "") + R.fdec(ani.gain) + " pts", cib: "Cible ≥ +4 points" }]);
+      legende("leg-formation", [["Pré-test", c.c3], ["Post-test", c.c0]]);
+      R.barresGroupees($("g-formation"), fo.map(function (r) { return { k: r.niveau, label: r.label }; }),
+        [{ label: "Pré-test", couleur: c.c3 }, { label: "Post-test", couleur: c.c0 }].map(function (s, i) { var o2 = { label: s.label, couleur: s.couleur }; fo.forEach(function (r) { o2[r.niveau] = i ? r.moy_post : r.moy_pre; }); return o2; }),
+        { max: 20, suffixe: "", aria: "Scores avant et après formation" });
+      R.table($("t-formation"), fo, [{ k: "label" }, { k: "formes", num: 1, fmt: R.nb }, { k: "femmes", num: 1, fmt: R.nb }, { k: "hommes", num: 1, fmt: R.nb }, { k: "moy_pre", num: 1, fmt: R.fdec }, { k: "moy_post", num: 1, fmt: R.fdec }, { k: "gain", num: 1, fmt: function (v) { return (v > 0 ? "+" : "") + R.fdec(v); } }, { k: "presence_pct", num: 1, fmt: R.pc }, { k: "certifies", num: 1, fmt: R.nb }, { k: "cible", num: 1, fmt: R.nb }], "niveau");
+    }
+    if (o === "resultats") {
+      var en = P.enquete(tdb, f), cl = [c.c3, c.c1, c.c0], base = en[0], der = en.length > 1 ? en[en.length - 1] : null;
+      var g = function (key) { return der && base && der[key] != null && base[key] != null ? Math.round((der[key] - base[key]) * 10) / 10 : null; };
+      var fg = function (v, suf) { return v == null ? "—" : (v > 0 ? "+" : "") + R.fdec(v) + (suf || " pts"); };
+      cartes("kpi-resultats", [
+        { lab: "Connaissances", val: R.pc(der ? der.conn_pct : base && base.conn_pct), cib: der ? "Gain : " + fg(g("conn_pct")) + " (cible +20)" : "Gain visible après la 2e vague" },
+        { lab: "Connaît au moins 2 sources d'aide", val: R.pc(der ? der.services_pct : base && base.services_pct), cib: der ? "Gain : " + fg(g("services_pct")) : "Cible ≥ 80 % au final" },
+        { lab: "Confiance en soi (/20)", val: (der || base) ? R.fdec((der || base).autoeff) : "—", cib: der ? "Gain : " + fg(g("autoeff"), "") + " (cible +3)" : "" },
+        { lab: "Se sent en sécurité dans le club", val: R.pc(der ? der.espace_pct : null), cib: "Membres du club, cible ≥ 85 %" }]);
+      legende("leg-resultats", en.map(function (r, i) { return [r.label + " (" + R.fint(r.n) + ")", cl[i]]; }));
+      R.barresGroupees($("g-resultats"), [{ k: "conn_pct", label: "Global" }, { k: "M1", label: "M1" }, { k: "M2", label: "M2" }, { k: "M3", label: "M3" }, { k: "M4", label: "M4" }, { k: "M5", label: "M5" }, { k: "services_pct", label: "Sources d'aide" }, { k: "allo_pct", label: "Allô École" }, { k: "espace_pct", label: "Espace sûr" }],
+        en.map(function (r, i) { var x = Object.assign({}, r); x.couleur = cl[i]; return x; }), { aria: "Résultats de l'enquête par vague" });
+      R.table($("t-resultats"), en, [{ k: "label" }, { k: "n", num: 1, fmt: R.nb }, { k: "conn_pct", num: 1, fmt: R.pc }, { k: "autoeff", num: 1, fmt: R.fdec }, { k: "services_pct", num: 1, fmt: R.pc }, { k: "allo_pct", num: 1, fmt: R.pc }, { k: "espace_pct", num: 1, fmt: R.pc }], "vague");
+    }
+    if (o === "protection") {
+      cartes("kpi-protection", [
+        { lab: "Consentements complets et rangés", val: R.pc(k.consent_pct), delta: k.d_consent_pct, cib: "Clubs visités ce mois · cible 100 %" },
+        { lab: "Protocole d'orientation appliqué", val: R.pc(k.protocole_pct), cib: R.nb(k.protocole_cas) + " demande(s) d'aide ce mois · cible 100 %" },
+        { lab: "Séances gratuites", val: R.pc(k.gratuite_pct), delta: k.d_gratuite_pct, cib: "Aucune contribution exigée · cible 100 %" },
+        { lab: "Collation servie", val: R.pc(k.collation_pct) },
+        { lab: "Clubs sans hommes ni garçons", val: R.pc(k.sans_hommes_pct), cib: "Fiche d'installation F1" },
+        { lab: "Registre de protection sécurisé", val: R.pc(k.registre_pct), cib: "Clubs visités ce mois" }]);
+    }
   }
 
-  function dessinerEnquete() {
-    var el = $("graph-enquete"), c = couleurs(), k = $("enq-indic").value, enq = etat.calc.enquete;
-    var noms = { "Baseline": "Situation de référence", "Mi-parcours": "Mi-parcours", "Final": "Évaluation finale" };
-    var vagues = ["Baseline", "Mi-parcours", "Final"].filter(function (v) { return enq.some(function (r) { return r.vague === v; }); });
-    legende("leg-enquete", vagues.map(function (v, i) { return [noms[v], c[i]]; }));
-    var moy = function (v, champ) { var rs = enq.filter(function (r) { return r.vague === v; }); return d3.sum(rs, function (r) { return +r[champ] * +r.repondantes; }) / d3.sum(rs, function (r) { return +r.repondantes; }); };
-    var derniere = vagues.length > 1 ? vagues[vagues.length - 1] : null;
-    $("enq-gain").textContent = derniere && vagues[0] === "Baseline"
-      ? "Gain moyen de connaissances : " + fdec(r1(moy(derniere, "score_connaissances_pct") - moy("Baseline", "score_connaissances_pct"))) + " points ; connaissance des sources d'aide : " + fdec(r1(moy(derniere, "connait_services_pct") - moy("Baseline", "connait_services_pct"))) + " points."
-      : "Le gain apparaîtra après la deuxième vague d'enquête.";
-    el.replaceChildren();
-    if (!enq.length) { el.textContent = "Pas encore de questionnaire."; return; }
-    var rows = enq.map(function (r) { return { grp: r.province + " · " + (r.tranche === "A" ? "12-14 ans" : "15-18 ans"), vague: r.vague, v: +r[k], n: +r.repondantes }; });
-    var groupes = Array.from(new Set(rows.map(function (r) { return r.grp; })));
-    var W = Math.max(280, el.clientWidth - 16), H = 250, ml = 40;
-    var svg = d3.select(el).append("svg").attr("width", "100%").attr("height", H).attr("viewBox", "0 0 " + W + " " + H)
-      .attr("role", "img").attr("aria-label", "Résultats de l'enquête par province, tranche d'âge et vague");
-    var y = d3.scaleLinear().domain([0, 100]).range([H - 38, 12]);
-    var x0 = d3.scaleBand().domain(groupes).range([ml, W - 6]).paddingInner(0.25).paddingOuter(0.1);
-    var x1 = d3.scaleBand().domain(vagues).range([0, x0.bandwidth()]).padding(0.08);
-    svg.append("g").attr("transform", "translate(" + ml + ",0)").call(d3.axisLeft(y).ticks(5).tickSize(-(W - ml - 6)).tickFormat(function (v) { return v + " %"; }))
-      .call(function (g) { g.select(".domain").remove(); g.selectAll("line").style("stroke", "var(--grid)"); });
-    var xa = svg.append("g").attr("transform", "translate(0," + (H - 38) + ")").call(d3.axisBottom(x0).tickSize(0).tickPadding(11));
-    xa.select(".domain").style("stroke", "var(--line)");
-    xa.selectAll(".tick text").each(function (t) { var p = t.split(" · "), tx = d3.select(this); tx.text(null);
-      p.forEach(function (s, i) { tx.append("tspan").attr("x", 0).attr("dy", i ? "1.1em" : 0).text(s); }); });
-    var tip = infobulle(el);
-    svg.append("g").selectAll("rect").data(rows.filter(function (r) { return vagues.indexOf(r.vague) >= 0; })).join("rect")
-      .attr("x", function (r) { return x0(r.grp) + x1(r.vague); }).attr("width", x1.bandwidth())
-      .attr("y", function (r) { return y(r.v || 0); }).attr("height", function (r) { return y(0) - y(r.v || 0); }).attr("rx", 2)
-      .style("fill", function (r) { return c[vagues.indexOf(r.vague)]; })
-      .on("pointerenter pointermove", function (ev, r) { tip.hidden = false; tip.textContent = r.grp + " — " + noms[r.vague] + " : " + fdec(r.v) + " % (" + fint(r.n) + " filles)"; placer(tip, el, ev); })
-      .on("pointerleave", function () { tip.hidden = true; });
-    if (x1.bandwidth() >= 22) svg.append("g").selectAll("text").data(rows).join("text")
-      .attr("x", function (r) { return x0(r.grp) + x1(r.vague) + x1.bandwidth() / 2; }).attr("y", function (r) { return y(r.v || 0) - 4; })
-      .attr("text-anchor", "middle").text(function (r) { return Math.round(r.v); });
-  }
-
-  function lignes(tbody, donnees, cols) {
-    tbody.replaceChildren();
-    if (!donnees.length) { var tr0 = document.createElement("tr"), td0 = document.createElement("td"); td0.colSpan = cols.length; td0.textContent = "Aucune donnée."; tr0.appendChild(td0); tbody.appendChild(tr0); return; }
-    donnees.forEach(function (r) {
-      var tr = document.createElement("tr");
-      cols.forEach(function (c) { var td = document.createElement("td"), v = r[c[0]]; td.textContent = v == null || v === "" ? "—" : c[1] ? c[1](v) : String(v); if (c[1]) td.className = "num"; tr.appendChild(td); });
-      tbody.appendChild(tr);
-    });
-  }
-  function remplirTables() {
-    lignes($("tab-province"), etat.calc.province, [["groupe"], ["clubs", fint], ["exec_pct", fdec], ["part_pct", fdec], ["sup_pct", fdec], ["qual_moy", fdec]]);
-    lignes($("tab-alerte"), etat.calc.alerte, [["club"], ["province"], ["milieu"], ["superviseure"], ["part_pct", fdec], ["seances", fint], ["qualite", fint]]);
+  function ficheEcole(r) {
+    var el = $("fiche-ecole"); el.replaceChildren();
+    var h = document.createElement("h2"); h.textContent = "École " + r.ecole + " · " + r.province + " · " + r.milieu; el.appendChild(h);
+    [R.ETATS[r.etat], r.clubs_ops + " club(s) actif(s) sur " + r.clubs, R.nb(r.filles) + " filles inscrites", "Participation du mois : " + R.pc(r.part_pct), r.visites + " club(s) visité(s) ce mois"].forEach(function (t) { var p = document.createElement("div"); p.textContent = t; el.appendChild(p); });
+    var b = document.createElement("button"); b.textContent = "Filtrer le tableau de bord sur cette école"; b.style.marginTop = "6px";
+    b.onclick = function () { etat.f.ecole = r.ecole; stockage(CLE_FILTRES, JSON.stringify(etat.f)); remplirFiltres(); dessiner(); };
+    el.appendChild(b);
   }
 
   demarrer();
